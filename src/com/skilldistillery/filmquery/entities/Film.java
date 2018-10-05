@@ -9,6 +9,10 @@ public class Film {
 	private String rental_duration;
 	private double rental_rate;
 	private String length;
+	
+	public Film() {
+		
+	}
 	public Film(int id, String title, String description, int release_year, int language_id, String rental_duration,
 			double rental_rate, String length, double replacement_cost, String rating, String special_features) {
 		super();
