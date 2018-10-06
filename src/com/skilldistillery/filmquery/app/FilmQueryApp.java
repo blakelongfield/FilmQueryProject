@@ -25,14 +25,7 @@ public class FilmQueryApp {
 	}
 
 	private void test() throws SQLException {
-		Film film = db.getFilmById(1);
-		Actor actor = db.getActorById(1);
-		List<Actor> actorsByFilm = db.getActorsByFilmId(1);
-		System.out.println(film);
-		System.out.println();
-		System.out.println(actor);
-		System.out.println();
-		System.out.println(actorsByFilm);
+
 	}
 
 	private void launch() throws SQLException {
@@ -48,26 +41,41 @@ public class FilmQueryApp {
 
 		do {
 			System.out.println("How would you like to proceed?");
-			System.out.println("1. Look up film by its id");
+			System.out.println("1. Look up film by its ID");
 			System.out.println("2. Look up a film by a search keyword");
 			System.out.println("3. Exit the application");
 			userInput = input.next();
 
-			switch (userInput) {
+			switch (userInput) { // main-menu starts here
 			case "1":
-				System.out.print("\nPlease enter a film id: ");
-				Film film = db.getFilmById(input.nextInt());
-				if (film == null) {
-					System.out.println();
-					break;
+				System.out.print("\nPlease enter a film ID: ");
+				try {
+					int selection = input.nextInt();
+					Film film = db.getFilmById(selection);
+					if (film == null) {
+						System.out.println();
+						break;
+					}
+					System.out.println(film + "\n");
+					System.out.println("Would you like to..."); // sub-menu starts here
+					System.out.println("1. Return to the main menu");
+					System.out.println("2. View all film details");
+					String subMenuSelection = input.next();
+					switch (subMenuSelection) {
+					case "1":
+						System.out.println();
+						break;
+					case "2":
+						db.getFilmByIdAllDetails(selection).toStringAllDetails();
+						break;
+					default:
+						System.out.println("Please enter a valid response");
+						subMenuSelection = input.next();
+						break;
+					}
+				} catch (InputMismatchException ime) {
+					System.out.println("\nInvalid response, Please try again. \n");
 				}
-				System.out.println(film + "\n");
-				
-//				//Sub-menu for film id (stretch goal)
-//				System.out.println("Would you like to...");
-//				System.out.println("1. Return to the main menu");
-//				System.out.println("2. View all film details");
-//				String subMenuSelection = input.next();
 				break;
 			case "2":
 				System.out.print("\nPlease enter your keyword: ");

@@ -12,6 +12,7 @@ public class Film {
 	private String rental_duration;
 	private double rental_rate;
 	private String length;
+	private String category;
 	private List<Actor> actors;
 	private List<Film> films;
 
@@ -20,7 +21,7 @@ public class Film {
 	}
 
 	public Film(int id, String title, String description, int release_year, int language_id, String language_name,
-			String rental_duration, double rental_rate, String length, double replacement_cost, String rating,
+			String rental_duration, double rental_rate, String length, String category, double replacement_cost, String rating,
 			String special_features) {
 		super();
 		this.id = id;
@@ -32,6 +33,7 @@ public class Film {
 		this.rental_duration = rental_duration;
 		this.rental_rate = rental_rate;
 		this.length = length;
+		this.category = category;
 		this.replacement_cost = replacement_cost;
 		this.rating = rating;
 		this.special_features = special_features;
@@ -134,6 +136,13 @@ public class Film {
 		return "\nFilm ID: " + id + "\nTitle: " + title + "\nYear Released: " + release_year + "\nDescription: "
 				+ description + "\nRating: " + rating + "\nLanguage: " + language_name + "\nActors: " + printActors();
 	}
+	
+	public String toStringAllDetails() {
+		return "\nFilm ID: " + id + "\nTitle: " + title + "\nYear Released: " + release_year + "\nDescription: "
+				+ description + "\nRating: " + rating + "\nLanguage ID: " + language_id + "\nLanguage: " + language_name + "\nCategory: " + category + 
+				"\nRental Rate: $" + rental_rate + "\nFilm Length: " + length + " Minutes"+ "\nReplacement Cost: $" + replacement_cost + 
+				"\nSpecial Features:" + special_features + "\nActors: " + printActors();
+	}
 
 	public String printActors() {
 		List<Actor> printActors = this.actors;
@@ -170,11 +179,20 @@ public class Film {
 		this.language_name = language_name;
 	}
 
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((actors == null) ? 0 : actors.hashCode());
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((films == null) ? 0 : films.hashCode());
 		result = prime * result + id;
@@ -207,6 +225,11 @@ public class Film {
 			if (other.actors != null)
 				return false;
 		} else if (!actors.equals(other.actors))
+			return false;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
 			return false;
 		if (description == null) {
 			if (other.description != null)

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 import com.skilldistillery.filmquery.entities.Actor;
@@ -21,14 +22,14 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Film film = null;
 
 		String sql = "SELECT film.id, title, description, release_year, language_id, language.name, "
-				+ "rating FROM film JOIN language on language.id = film.language_id WHERE film.id = ?";
+				+ "film.rating FROM film JOIN language ON language.id = film.language_id WHERE film.id = ?";
 
 		Connection conn = DriverManager.getConnection(URL, user, pass);
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, filmId);
 		ResultSet filmResult = stmt.executeQuery();
 		int counter = 0;
-		
+
 		if (filmResult.next()) {
 			film = new Film();
 			film.setId(filmResult.getInt("id"));
@@ -39,21 +40,18 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setLanguage_name(filmResult.getString("language.name"));
 			film.setRating(filmResult.getString("rating"));
 			film.setActors(getActorsByFilmId(filmId));
-			
-//			film.setRental_rate(filmResult.getDouble("rental_rate"));						//sub- menu stretch goals
-//			film.setLength(filmResult.getString("length"));
-//			film.setReplacement_cost(filmResult.getDouble("replacement_cost"));
-//			film.setSpecial_features(filmResult.getString("special_features"));
+			counter++;
 		}
-		
+
 		if (film == null) {
 			System.out.println("\nWe apologize, but there is no title with that ID in our library.");
 		}
+		
 
 		filmResult.close();
 		stmt.close();
 		conn.close();
-		System.out.println("Your search returned " + (counter) + " results.");
+		System.out.println("\nYour search returned " + (counter) + " result.");
 		return film;
 	}
 
@@ -144,7 +142,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 
 		if (films.isEmpty()) {
-			System.out.println("\nWe apologize, but there is no title or description with that keyword in our library.");
+			System.out
+					.println("\nWe apologize, but there is no title or description with that keyword in our library.");
 		}
 
 		filmResult.close();
@@ -153,61 +152,50 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		System.out.println("Your search returned " + (counter) + " results.");
 		return films;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-//	
-//	
-//	public Film getFilmByIdAllDetails(int filmId) throws SQLException {
-//
-//		Film film = null;
-//
-//		String sql = "SELECT film.id, title, description, release_year, language_id, language.name, "
-//				+ "rating FROM film JOIN language on language.id = film.language_id WHERE film.id = ?";
-//
-//		Connection conn = DriverManager.getConnection(URL, user, pass);
-//		PreparedStatement stmt = conn.prepareStatement(sql);
-//		stmt.setInt(1, filmId);
-//		ResultSet filmResult = stmt.executeQuery();
-//		int counter = 0;
-//		
-//		if (filmResult.next()) {
-//			film = new Film();
-//			film.setId(filmResult.getInt("id"));
-//			film.setTitle(filmResult.getString("title"));
-//			film.setDescription(filmResult.getString("description"));
-//			film.setRelease_year(filmResult.getInt("release_year"));
-//			film.setLanguage_id(filmResult.getInt("language_id"));
-//			film.setLanguage_name(filmResult.getString("language.name"));
-//			film.setRating(filmResult.getString("rating"));
-//			film.setActors(getActorsByFilmId(filmId));
-//			
-////			film.setRental_rate(filmResult.getDouble("rental_rate"));						//sub- menu stretch goals
-////			film.setLength(filmResult.getString("length"));
-////			film.setReplacement_cost(filmResult.getDouble("replacement_cost"));
-////			film.setSpecial_features(filmResult.getString("special_features"));
-//		}
-//		
-//		if (film == null) {
-//			System.out.println("\nWe apologize, but there is no title with that ID in our library.");
-//		}
-//
-//		filmResult.close();
-//		stmt.close();
-//		conn.close();
-//		System.out.println("Your search returned " + (counter) + " results.");
-//		return film;
-//	}
-	
-	
-	
-	
-	
-	
-	
+
+	public Film getFilmByIdAllDetails(int filmId) throws SQLException {				//method will be called if user selects to show all details of film
+
+		Film film = null;
+
+		String sql = "SELECT film.id, title, description, release_year, language_id, language.name, film.rating, category.name, rental_rate, length, replacement_cost, special_features "
+				+ "FROM film "
+				+ "JOIN language "
+				+ "ON language.id = film.language_id "
+				+ "JOIN film_category "
+				+ "ON film.id = film_category.film_id "
+				+ "JOIN category "
+				+ "ON film_category.category_id = category.id "
+				+ "WHERE film.id = ?";
+
+		Connection conn = DriverManager.getConnection(URL, user, pass);
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, filmId);
+		ResultSet filmResult = stmt.executeQuery();
+		int counter = 0;
+
+		if (filmResult.next()) {
+			film = new Film();
+			film.setId(filmResult.getInt("id"));
+			film.setTitle(filmResult.getString("title"));
+			film.setDescription(filmResult.getString("description"));
+			film.setRelease_year(filmResult.getInt("release_year"));
+			film.setLanguage_id(filmResult.getInt("language_id"));
+			film.setLanguage_name(filmResult.getString("language.name"));
+			film.setRating(filmResult.getString("rating"));
+			film.setRental_rate(filmResult.getDouble("rental_rate")); 
+			film.setLength(filmResult.getString("length"));
+			film.setCategory(filmResult.getString("category.name"));
+			film.setReplacement_cost(filmResult.getDouble("replacement_cost"));
+			film.setSpecial_features(filmResult.getString("special_features"));
+			film.setActors(getActorsByFilmId(filmId));
+			counter++;
+		}
+
+		filmResult.close();
+		stmt.close();
+		conn.close();
+		System.out.println("\nYour search returned " + (counter) + " result.");
+		System.out.println(film.toStringAllDetails() + "\n");
+		return film;
+	}
 }
