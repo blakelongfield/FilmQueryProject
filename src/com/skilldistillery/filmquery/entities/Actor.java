@@ -7,6 +7,10 @@ public class Actor {
 	public int getId() {
 		return id;
 	}
+	
+	public Actor() {
+		
+	}
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -30,7 +34,7 @@ public class Actor {
 	}
 	@Override
 	public String toString() {
-		return "Actor [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + "]";
+		return "Actor ID: " + id + ", first name: " + first_name + ", last name: " + last_name;
 	}
 	@Override
 	public int hashCode() {
