@@ -8,6 +8,7 @@ public class Film {
 	private String description;
 	private int release_year;
 	private int language_id;
+	private String language_name;
 	private String rental_duration;
 	private double rental_rate;
 	private String length;
@@ -17,7 +18,7 @@ public class Film {
 	public Film() {
 		
 	}
-	public Film(int id, String title, String description, int release_year, int language_id, String rental_duration,
+	public Film(int id, String title, String description, int release_year, int language_id, String language_name, String rental_duration,
 			double rental_rate, String length, double replacement_cost, String rating, String special_features) {
 		super();
 		this.id = id;
@@ -25,6 +26,7 @@ public class Film {
 		this.description = description;
 		this.release_year = release_year;
 		this.language_id = language_id;
+		this.language_name = language_name;
 		this.rental_duration = rental_duration;
 		this.rental_rate = rental_rate;
 		this.length = length;
@@ -101,13 +103,44 @@ public class Film {
 	public void setSpecial_features(String special_features) {
 		this.special_features = special_features;
 	}
+	
+	@Override
+	public String toString() {
+		return "\nFilm ID: " + id + 
+				"\nTitle: " + title +  
+				"\nYear Released: " + release_year +
+				"\nDescription: " + description + 
+				"\nRating: " + rating +
+				"\nLanguage: " + language_name;
+	}
+	public List<Actor> getActors() {
+		return actors;
+	}
+	public void setActors(List<Actor> actors) {
+		this.actors = actors;
+	}
+	public List<Film> getFilms() {
+		return films;
+	}
+	public void setFilms(List<Film> films) {
+		this.films = films;
+	}
+	public String getLanguage_name() {
+		return language_name;
+	}
+	public void setLanguage_name(String language_name) {
+		this.language_name = language_name;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((actors == null) ? 0 : actors.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((films == null) ? 0 : films.hashCode());
 		result = prime * result + id;
 		result = prime * result + language_id;
+		result = prime * result + ((language_name == null) ? 0 : language_name.hashCode());
 		result = prime * result + ((length == null) ? 0 : length.hashCode());
 		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
 		result = prime * result + release_year;
@@ -130,14 +163,29 @@ public class Film {
 		if (getClass() != obj.getClass())
 			return false;
 		Film other = (Film) obj;
+		if (actors == null) {
+			if (other.actors != null)
+				return false;
+		} else if (!actors.equals(other.actors))
+			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
+		if (films == null) {
+			if (other.films != null)
+				return false;
+		} else if (!films.equals(other.films))
+			return false;
 		if (id != other.id)
 			return false;
 		if (language_id != other.language_id)
+			return false;
+		if (language_name == null) {
+			if (other.language_name != null)
+				return false;
+		} else if (!language_name.equals(other.language_name))
 			return false;
 		if (length == null) {
 			if (other.length != null)
@@ -171,25 +219,5 @@ public class Film {
 		} else if (!title.equals(other.title))
 			return false;
 		return true;
-	}
-	@Override
-	public String toString() {
-		return "Film ID: " + id + ", title: " + title + ", \ndescription: " + description + ", \nrelease year: " + release_year
-				+ ", language : " + language_id + ", rental duration: " + rental_duration + ", \nrental rate: $"
-				+ rental_rate + ", length: " + length + ", replacement cost: $" + replacement_cost + ", rating: " + rating
-				+ ", \nspecial features: " + special_features + "\nActors in the film: " + actors;
-		
-	}
-	public List<Actor> getActors() {
-		return actors;
-	}
-	public void setActors(List<Actor> actors) {
-		this.actors = actors;
-	}
-	public List<Film> getFilms() {
-		return films;
-	}
-	public void setFilms(List<Film> films) {
-		this.films = films;
 	}
 }
