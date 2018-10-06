@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setSpecial_features(filmResult.getString("special_features"));
 			film.setActors(getActorsByFilmId(filmId));
 		}
+		
+		
 
 		filmResult.close();
 		stmt.close();
@@ -102,6 +105,38 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 
 		return actorsByFilm;
+	}
+	
+	
+
+	@Override
+	public Film getFilmByKeyword(String keyword) throws SQLException {
+
+		Film film = null;
+		String sql = "SELECT id, title, description, release_year, language_id, FROM film WHERE title LIKE '%keyword%'";
+
+		Connection conn = DriverManager.getConnection(URL, user, pass);
+		Statement stmt = conn.prepareStatement(sql);
+		ResultSet filmResult = stmt.executeQuery(sql);
+		
+		if (filmResult.next()) {
+			film = new Film();
+			film.setId(filmResult.getInt("id"));
+			film.setTitle(filmResult.getString("title"));
+			film.setDescription(filmResult.getString("description"));
+			film.setRelease_year(filmResult.getInt("release_year"));
+			film.setLanguage_id(filmResult.getInt("language_id"));
+			film.setRental_rate(filmResult.getDouble("rental_rate"));
+			film.setLength(filmResult.getString("length"));
+			film.setReplacement_cost(filmResult.getDouble("replacement_cost"));
+			film.setRating(filmResult.getString("rating"));
+			film.setSpecial_features(filmResult.getString("special_features"));
+		}
+
+		filmResult.close();
+		stmt.close();
+		conn.close();
+		return film;
 	}
 
 }
