@@ -1,6 +1,7 @@
 package com.skilldistillery.filmquery.app;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -42,32 +43,44 @@ public class FilmQueryApp {
 		input.close();
 	}
 
-	private void startUserInterface(Scanner input) throws SQLException {
-		System.out.println("How would you like to proceed?");
-		System.out.println("1. Look up film by its id");
-		System.out.println("2. Look up a film by a search keyword");
-		System.out.println("3. Exit the application");
-		String userInput = input.next();
+	public void startUserInterface(Scanner input) throws SQLException {
+		String userInput;
 
-		while (true) {
-			if (userInput.equals("1")) {
+		do {
+			System.out.println("How would you like to proceed?");
+			System.out.println("1. Look up film by its id");
+			System.out.println("2. Look up a film by a search keyword");
+			System.out.println("3. Exit the application");
+			userInput = input.next();
+
+			switch (userInput) {
+			case "1":
 				System.out.print("\nPlease enter a film id: ");
 				Film film = db.getFilmById(input.nextInt());
-				System.out.println(film);
-			}
-
-			if (userInput.equals("2")) {
+				if (film == null) {
+					System.out.println();
+					break;
+				}
+				System.out.println(film + "\n");
+				
+//				//Sub-menu for film id (stretch goal)
+//				System.out.println("Would you like to...");
+//				System.out.println("1. Return to the main menu");
+//				System.out.println("2. View all film details");
+//				String subMenuSelection = input.next();
+				break;
+			case "2":
 				System.out.print("\nPlease enter your keyword: ");
 				db.getFilmByKeyword(input.next());
-			}
-
-			if (userInput.equals("3")) {
+				System.out.println();
+				break;
+			case "3":
 				System.exit(0);
-			}
-
-			else {
+			default:
+				System.out.println("Please enter a valid response");
 				userInput = input.next();
+				break;
 			}
-		}
+		} while (!userInput.equals("3"));
 	}
 }

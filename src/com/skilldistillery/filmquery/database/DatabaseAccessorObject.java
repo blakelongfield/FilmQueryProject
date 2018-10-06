@@ -27,7 +27,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, filmId);
 		ResultSet filmResult = stmt.executeQuery();
-
+		int counter = 0;
+		
 		if (filmResult.next()) {
 			film = new Film();
 			film.setId(filmResult.getInt("id"));
@@ -36,21 +37,23 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setRelease_year(filmResult.getInt("release_year"));
 			film.setLanguage_id(filmResult.getInt("language_id"));
 			film.setLanguage_name(filmResult.getString("language.name"));
-//			film.setRental_rate(filmResult.getDouble("rental_rate"));						//commented out in case they are need for future use
+			film.setRating(filmResult.getString("rating"));
+			film.setActors(getActorsByFilmId(filmId));
+			
+//			film.setRental_rate(filmResult.getDouble("rental_rate"));						//sub- menu stretch goals
 //			film.setLength(filmResult.getString("length"));
 //			film.setReplacement_cost(filmResult.getDouble("replacement_cost"));
-			film.setRating(filmResult.getString("rating"));
 //			film.setSpecial_features(filmResult.getString("special_features"));
-			film.setActors(getActorsByFilmId(filmId));
 		}
+		
 		if (film == null) {
-			System.out.println("We apologize, but there is no title with that ID in our library.");
-			System.exit(0); 																// stretch goal for menu to re-appear for user
+			System.out.println("\nWe apologize, but there is no title with that ID in our library.");
 		}
 
 		filmResult.close();
 		stmt.close();
 		conn.close();
+		System.out.println("Your search returned " + (counter) + " results.");
 		return film;
 	}
 
@@ -81,11 +84,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public List<Actor> getActorsByFilmId(int filmId) {
 		List<Actor> actorsByFilm = new ArrayList<>();
+
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			String sql = "SELECT actor.id, actor.first_name, actor.last_name, "
 					+ "film_actor.film_id FROM actor JOIN film_actor "
-					+ "ON film_actor.actor_id = actor.id WHERE id = ?";
+					+ "ON film_actor.actor_id = actor.id WHERE film_id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 			ResultSet rs = stmt.executeQuery();
@@ -111,15 +115,17 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	public List<Film> getFilmByKeyword(String keyword) throws SQLException {
 		List<Film> films = new ArrayList<>();
+		DatabaseAccessorObject db = new DatabaseAccessorObject();
 
-		String sql = "SELECT film.id, title, description, release_year, rating, language_id, language.name FROM film JOIN language on language.id = film.language_id WHERE title like ? OR description like ?";
+		String sql = "SELECT film.id, title, description, release_year, rating, language_id, language.name "
+				+ "FROM film JOIN language on language.id = film.language_id WHERE title like ? OR description like ?";
 		Connection conn = DriverManager.getConnection(URL, user, pass);
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, "%" + keyword + "%");
 		stmt.setString(2, "%" + keyword + "%");
 
 		ResultSet filmResult = stmt.executeQuery();
-		int counter = 1;
+		int counter = 0;
 
 		while (filmResult.next()) {
 			Film film = new Film();
@@ -130,22 +136,78 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setRating(filmResult.getString("rating"));
 			film.setLanguage_id(filmResult.getInt("language_id"));
 			film.setLanguage_name(filmResult.getString("language.name"));
+			film.setActors(getActorsByFilmId(filmResult.getInt("id")));
 			films.add(film);
 
-			System.out.println(counter + " " + film + "\n");
+			System.out.println(film + "\n");
 			counter++;
 		}
 
 		if (films.isEmpty()) {
-			System.out.println("We apologize, but there is no title with that ID in our library.");
-			System.exit(0); 														// stretch goal for menu to re-appear for user
+			System.out.println("\nWe apologize, but there is no title or description with that keyword in our library.");
 		}
 
 		filmResult.close();
 		stmt.close();
 		conn.close();
-
+		System.out.println("Your search returned " + (counter) + " results.");
 		return films;
 	}
-
+	
+	
+	
+	
+	
+	
+	
+	
+//	
+//	
+//	public Film getFilmByIdAllDetails(int filmId) throws SQLException {
+//
+//		Film film = null;
+//
+//		String sql = "SELECT film.id, title, description, release_year, language_id, language.name, "
+//				+ "rating FROM film JOIN language on language.id = film.language_id WHERE film.id = ?";
+//
+//		Connection conn = DriverManager.getConnection(URL, user, pass);
+//		PreparedStatement stmt = conn.prepareStatement(sql);
+//		stmt.setInt(1, filmId);
+//		ResultSet filmResult = stmt.executeQuery();
+//		int counter = 0;
+//		
+//		if (filmResult.next()) {
+//			film = new Film();
+//			film.setId(filmResult.getInt("id"));
+//			film.setTitle(filmResult.getString("title"));
+//			film.setDescription(filmResult.getString("description"));
+//			film.setRelease_year(filmResult.getInt("release_year"));
+//			film.setLanguage_id(filmResult.getInt("language_id"));
+//			film.setLanguage_name(filmResult.getString("language.name"));
+//			film.setRating(filmResult.getString("rating"));
+//			film.setActors(getActorsByFilmId(filmId));
+//			
+////			film.setRental_rate(filmResult.getDouble("rental_rate"));						//sub- menu stretch goals
+////			film.setLength(filmResult.getString("length"));
+////			film.setReplacement_cost(filmResult.getDouble("replacement_cost"));
+////			film.setSpecial_features(filmResult.getString("special_features"));
+//		}
+//		
+//		if (film == null) {
+//			System.out.println("\nWe apologize, but there is no title with that ID in our library.");
+//		}
+//
+//		filmResult.close();
+//		stmt.close();
+//		conn.close();
+//		System.out.println("Your search returned " + (counter) + " results.");
+//		return film;
+//	}
+	
+	
+	
+	
+	
+	
+	
 }

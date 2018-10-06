@@ -14,12 +14,14 @@ public class Film {
 	private String length;
 	private List<Actor> actors;
 	private List<Film> films;
-	
+
 	public Film() {
-		
+
 	}
-	public Film(int id, String title, String description, int release_year, int language_id, String language_name, String rental_duration,
-			double rental_rate, String length, double replacement_cost, String rating, String special_features) {
+
+	public Film(int id, String title, String description, int release_year, int language_id, String language_name,
+			String rental_duration, double rental_rate, String length, double replacement_cost, String rating,
+			String special_features) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -34,103 +36,140 @@ public class Film {
 		this.rating = rating;
 		this.special_features = special_features;
 	}
+
 	private double replacement_cost;
 	private String rating;
 	private String special_features;
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public int getRelease_year() {
 		return release_year;
 	}
+
 	public void setRelease_year(int release_year) {
 		this.release_year = release_year;
 	}
+
 	public int getLanguage_id() {
 		return language_id;
 	}
+
 	public void setLanguage_id(int language_id) {
 		this.language_id = language_id;
 	}
+
 	public String getRental_duration() {
 		return rental_duration;
 	}
+
 	public void setRental_duration(String rental_duration) {
 		this.rental_duration = rental_duration;
 	}
+
 	public double getRental_rate() {
 		return rental_rate;
 	}
+
 	public void setRental_rate(double rental_rate) {
 		this.rental_rate = rental_rate;
 	}
+
 	public String getLength() {
 		return length;
 	}
+
 	public void setLength(String length) {
 		this.length = length;
 	}
+
 	public double getReplacement_cost() {
 		return replacement_cost;
 	}
+
 	public void setReplacement_cost(double replacement_cost) {
 		this.replacement_cost = replacement_cost;
 	}
+
 	public String getRating() {
 		return rating;
 	}
+
 	public void setRating(String rating) {
 		this.rating = rating;
 	}
+
 	public String getSpecial_features() {
 		return special_features;
 	}
+
 	public void setSpecial_features(String special_features) {
 		this.special_features = special_features;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "\nFilm ID: " + id + 
-				"\nTitle: " + title +  
-				"\nYear Released: " + release_year +
-				"\nDescription: " + description + 
-				"\nRating: " + rating +
-				"\nLanguage: " + language_name;
+		return "\nFilm ID: " + id + "\nTitle: " + title + "\nYear Released: " + release_year + "\nDescription: "
+				+ description + "\nRating: " + rating + "\nLanguage: " + language_name + "\nActors: " + printActors();
 	}
+
+	public String printActors() {
+		List<Actor> printActors = this.actors;
+		String actorString = "";
+		for (Actor actor : printActors) {
+			actorString += actor.getFirst_name() + " " + actor.getLast_name() + " | ";
+
+		}
+		return actorString;
+
+	}
+
 	public List<Actor> getActors() {
 		return actors;
 	}
+
 	public void setActors(List<Actor> actors) {
 		this.actors = actors;
 	}
+
 	public List<Film> getFilms() {
 		return films;
 	}
+
 	public void setFilms(List<Film> films) {
 		this.films = films;
 	}
+
 	public String getLanguage_name() {
 		return language_name;
 	}
+
 	public void setLanguage_name(String language_name) {
 		this.language_name = language_name;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -154,6 +193,7 @@ public class Film {
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -220,4 +260,5 @@ public class Film {
 			return false;
 		return true;
 	}
+	
 }
