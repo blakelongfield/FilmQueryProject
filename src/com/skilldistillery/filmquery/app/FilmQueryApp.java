@@ -57,9 +57,8 @@ public class FilmQueryApp {
 			}
 
 			if (userInput.equals("2")) {
-				//System.out.println("\nWould you like to search by title or description");			stretch goal
 				System.out.print("\nPlease enter your keyword: ");
-				List<Film> keywordFilm = db.getFilmByKeyword(input.next());
+				db.getFilmByKeyword(input.next());
 			}
 
 			if (userInput.equals("3")) {

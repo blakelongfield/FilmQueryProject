@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +39,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 //			film.setRental_rate(filmResult.getDouble("rental_rate"));						//commented out in case they are need for future use
 //			film.setLength(filmResult.getString("length"));
 //			film.setReplacement_cost(filmResult.getDouble("replacement_cost"));
-//			film.setRating(filmResult.getString("rating"));
+			film.setRating(filmResult.getString("rating"));
 //			film.setSpecial_features(filmResult.getString("special_features"));
-//			film.setActors(getActorsByFilmId(filmId));
+			film.setActors(getActorsByFilmId(filmId));
 		}
 		if (film == null) {
 			System.out.println("We apologize, but there is no title with that ID in our library.");
-			System.exit(0); // stretch goal for menu to re-appear for user
+			System.exit(0); 																// stretch goal for menu to re-appear for user
 		}
 
 		filmResult.close();
@@ -113,7 +112,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public List<Film> getFilmByKeyword(String keyword) throws SQLException {
 		List<Film> films = new ArrayList<>();
 
-		String sql = "SELECT film.id, title, description, release_year, language_id, language.name FROM film JOIN language on language.id = film.language_id WHERE title like ? OR description like ?";
+		String sql = "SELECT film.id, title, description, release_year, rating, language_id, language.name FROM film JOIN language on language.id = film.language_id WHERE title like ? OR description like ?";
 		Connection conn = DriverManager.getConnection(URL, user, pass);
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, "%" + keyword + "%");
@@ -128,6 +127,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setTitle(filmResult.getString("title"));
 			film.setDescription(filmResult.getString("description"));
 			film.setRelease_year(filmResult.getInt("release_year"));
+			film.setRating(filmResult.getString("rating"));
 			film.setLanguage_id(filmResult.getInt("language_id"));
 			film.setLanguage_name(filmResult.getString("language.name"));
 			films.add(film);
@@ -138,7 +138,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		if (films.isEmpty()) {
 			System.out.println("We apologize, but there is no title with that ID in our library.");
-			System.exit(0); // stretch goal to re-enter
+			System.exit(0); 														// stretch goal for menu to re-appear for user
 		}
 
 		filmResult.close();
