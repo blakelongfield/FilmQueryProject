@@ -42,17 +42,17 @@ public class FilmQueryApp {
 			switch (userInput) {
 			case "1":
 				System.out.print("\nPlease enter a film ID: ");
-				try {
-					int selection = input.nextInt();
-					Film film = db.getFilmById(selection);
+					try {
+						int selection = input.nextInt();
+						Film film = db.getFilmById(selection);
 
-					if (film == null) {
-						System.out.println();
-						break;
+						if (film == null) {
+							System.out.println();
+								break;
 					}
-
+						
 					System.out.println(film + "\n");
-					subMenuSelection(input, selection);
+					subMenu(input, selection);
 
 				} catch (InputMismatchException ime) {
 					System.out.println("\nPlease enter a valid response \n");
@@ -74,7 +74,7 @@ public class FilmQueryApp {
 		} while (!userInput.equals("3"));
 	}
 
-	public void subMenuSelection(Scanner input, int selection) throws SQLException {
+	public void subMenu(Scanner input, int userSelection) throws SQLException {
 		System.out.println("Would you like to...");
 		System.out.println("1. Return to the main menu");
 		System.out.println("2. View all film details");
@@ -85,11 +85,11 @@ public class FilmQueryApp {
 			System.out.println();
 			break;
 		case "2":
-			db.getFilmByIdAllDetails(selection).toStringAllDetails();
+			db.getFilmByIdAllDetails(userSelection).toStringAllDetails();
 			break;
 		default:
 			System.out.println("\nPlease enter a valid response\n");
-			subMenuSelection(input, selection);
+			subMenu(input, userSelection);
 			break;
 		}
 	}

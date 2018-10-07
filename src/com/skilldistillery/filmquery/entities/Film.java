@@ -13,6 +13,7 @@ public class Film {
 	private double rental_rate;
 	private String length;
 	private String category;
+	private String media_condition;
 	private List<Actor> actors;
 	private List<Film> films;
 
@@ -21,7 +22,7 @@ public class Film {
 	}
 
 	public Film(int id, String title, String description, int release_year, int language_id, String language_name,
-			String rental_duration, double rental_rate, String length, String category, double replacement_cost, String rating,
+			String rental_duration, double rental_rate, String length, String category, String media_condition, double replacement_cost, String rating,
 			String special_features) {
 		super();
 		this.id = id;
@@ -34,9 +35,15 @@ public class Film {
 		this.rental_rate = rental_rate;
 		this.length = length;
 		this.category = category;
+		this.media_condition = media_condition;
 		this.replacement_cost = replacement_cost;
 		this.rating = rating;
 		this.special_features = special_features;
+	}
+
+	public Film(String media_condition) {
+		super();
+		this.media_condition = media_condition;
 	}
 
 	private double replacement_cost;
@@ -118,13 +125,16 @@ public class Film {
 	public String getRating() {
 		return rating;
 	}
-
-	public void setRating(String rating) {
-		this.rating = rating;
+	public String getMedia_condition() {
+		return media_condition;
 	}
 
 	public String getSpecial_features() {
 		return special_features;
+	}
+	
+	public void setRating(String rating) {
+		this.rating = rating;
 	}
 
 	public void setSpecial_features(String special_features) {
@@ -141,7 +151,7 @@ public class Film {
 		return "\nFilm ID: " + id + "\nTitle: " + title + "\nYear Released: " + release_year + "\nDescription: "
 				+ description + "\nRating: " + rating + "\nLanguage ID: " + language_id + "\nLanguage: " + language_name + "\nCategory: " + category + 
 				"\nRental Rate: $" + rental_rate + "\nFilm Length: " + length + " Minutes"+ "\nReplacement Cost: $" + replacement_cost + 
-				"\nSpecial Features:" + special_features + "\nActors: " + printActors();
+				"\nSpecial Features: " + special_features + "\nCondition: " + media_condition + "\nActors: " + printActors();
 	}
 
 	public String printActors() {
@@ -183,6 +193,9 @@ public class Film {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public void setMedia_condition(String media_condition) {
+		this.media_condition = media_condition;
 	}
 
 	@Override

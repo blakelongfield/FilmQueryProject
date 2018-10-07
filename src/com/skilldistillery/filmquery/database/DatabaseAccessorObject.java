@@ -162,7 +162,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		filmResult.close();
 		stmt.close();
 		conn.close();
-		System.out.println("Your search returned " + (counter) + " results.");
+		System.out.println("Your search returned " + counter + " results.");
 		return films;
 	}
 
@@ -170,7 +170,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		Film film = null;
 
-		String sql = "SELECT film.id, title, description, release_year, language_id, language.name, film.rating, category.name, rental_rate, length, replacement_cost, special_features "
+		String sql = "SELECT film.id, title, description, release_year, language_id, language.name, film.rating, "
+				+ "category.name, rental_rate, length, replacement_cost, special_features, inventory_item.media_condition "
 				+ "FROM film "
 				+ "JOIN language "
 				+ "ON language.id = film.language_id "
@@ -178,6 +179,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				+ "ON film.id = film_category.film_id "
 				+ "JOIN category "
 				+ "ON film_category.category_id = category.id "
+				+ "JOIN inventory_item "  
+				+ "ON film.id = inventory_item.film_id "
 				+ "WHERE film.id = ?";
 
 		Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -200,6 +203,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setCategory(filmResult.getString("category.name"));
 			film.setReplacement_cost(filmResult.getDouble("replacement_cost"));
 			film.setSpecial_features(filmResult.getString("special_features"));
+			film.setMedia_condition(filmResult.getString("media_condition"));
 			film.setActors(getActorsByFilmId(filmId));
 			counter++;
 		}
