@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 
 import com.skilldistillery.filmquery.entities.Actor;
@@ -122,7 +121,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	public List<Film> getFilmByKeyword(String keyword) throws SQLException {
 		List<Film> films = new ArrayList<>();
-		DatabaseAccessorObject db = new DatabaseAccessorObject();
 
 		String sql = "SELECT film.id, title, description, release_year, rating, language_id, language.name "
 				+ "FROM film "
