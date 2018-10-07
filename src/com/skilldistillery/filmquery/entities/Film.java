@@ -149,10 +149,8 @@ public class Film {
 		String actorString = "";
 		for (Actor actor : printActors) {
 			actorString += actor.getFirst_name() + " " + actor.getLast_name() + " | ";
-
 		}
 		return actorString;
-
 	}
 
 	public List<Actor> getActors() {

@@ -21,8 +21,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		Film film = null;
 
-		String sql = "SELECT film.id, title, description, release_year, language_id, language.name, "
-				+ "film.rating FROM film JOIN language ON language.id = film.language_id WHERE film.id = ?";
+		String sql = "SELECT film.id, film.title, film.description, film.release_year, language_id, language.name, + film.rating "
+				+ "FROM film "
+				+ "JOIN language "
+				+ "ON language.id = film.language_id "
+				+ "WHERE film.id = ?";
 
 		Connection conn = DriverManager.getConnection(URL, user, pass);
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -58,7 +61,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public Actor getActorById(int actorId) throws SQLException {
 
 		Actor actor = null;
-		String sql = "SELECT id, first_name, last_name FROM actor WHERE id = ?";
+		String sql = "SELECT id, first_name, last_name "
+				+ "FROM actor "
+				+ "WHERE id = ?";
 
 		Connection conn = DriverManager.getConnection(URL, user, pass);
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -86,8 +91,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			String sql = "SELECT actor.id, actor.first_name, actor.last_name, "
-					+ "film_actor.film_id FROM actor JOIN film_actor "
-					+ "ON film_actor.actor_id = actor.id WHERE film_id = ?";
+					+ "film_actor.film_id "
+					+ "FROM actor "
+					+ "JOIN film_actor "
+					+ "ON film_actor.actor_id = actor.id "
+					+ "WHERE film_id = ?";
+			
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 			ResultSet rs = stmt.executeQuery();
@@ -116,7 +125,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		DatabaseAccessorObject db = new DatabaseAccessorObject();
 
 		String sql = "SELECT film.id, title, description, release_year, rating, language_id, language.name "
-				+ "FROM film JOIN language on language.id = film.language_id WHERE title like ? OR description like ?";
+				+ "FROM film "
+				+ "JOIN language on language.id = film.language_id "
+				+ "WHERE title like ? "
+				+ "OR description like ?";
+		
 		Connection conn = DriverManager.getConnection(URL, user, pass);
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, "%" + keyword + "%");
@@ -136,8 +149,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setLanguage_name(filmResult.getString("language.name"));
 			film.setActors(getActorsByFilmId(filmResult.getInt("id")));
 			films.add(film);
-
+			
 			System.out.println(film + "\n");
+			System.out.println("---------------------------------"
+					+ "---------------------------------------------------------");
 			counter++;
 		}
 
