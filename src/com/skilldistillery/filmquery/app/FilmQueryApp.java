@@ -83,14 +83,14 @@ public class FilmQueryApp {
 		switch (subMenuSelection) {
 		case "1":
 			System.out.println();
-			break;
+				break;
 		case "2":
 			db.getFilmByIdAllDetails(userSelection).toStringAllDetails();
-			break;
+				break;
 		default:
 			System.out.println("\nPlease enter a valid response\n");
 			subMenu(input, userSelection);
-			break;
+				break;
 		}
 	}
 }
