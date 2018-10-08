@@ -1,6 +1,6 @@
 ## Film Query Project
 
-### Week 2 Homework for Skill Distillery
+### Week 6 Homework for Skill Distillery
 
 This program accesses a database full of films and allows the user to search for films via 
 film ID or a keyword. 
